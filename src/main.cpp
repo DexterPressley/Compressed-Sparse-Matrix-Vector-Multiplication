@@ -1,6 +1,7 @@
 #include <iostream>
 #include "Matrix.h"
 #include "CRS.h"
+#include "CCS.h"
 #include "SampleMatrix.h"
 
 int main()
@@ -29,4 +30,49 @@ int main()
         std::cout << crs.row_ptr[i] << " ";
     }
     std::cout << '\n';
+
+    auto reconstruct_crs = from_crs(crs);
+
+    for (unsigned int i = 0; i < reconstruct_crs.size(); i++)
+    {
+        for (unsigned int j = 0; j < reconstruct_crs.size(); j++)
+        {
+            std::cout << reconstruct_crs[i][j] << " ";
+        }
+        std::cout << '\n';
+    }
+
+    auto ccs = to_ccs(problem_1);
+
+    std::cout << "val: ";
+    for (unsigned int i = 0; i < ccs.val.size(); i++)
+    {
+        std::cout << ccs.val[i] << " ";
+    }
+    std::cout << '\n';
+
+    std::cout << "col_ind: ";
+    for (unsigned int i = 0; i < ccs.row_ind.size(); i++)
+    {
+        std::cout << ccs.row_ind[i] << " ";
+    }
+    std::cout << '\n';
+
+    std::cout << "row_ptr: ";
+    for (unsigned int i = 0; i < ccs.col_ptr.size(); i++)
+    {
+        std::cout << ccs.col_ptr[i] << " ";
+    }
+    std::cout << '\n';
+
+    auto reconstruct_ccs = from_ccs(ccs);
+
+    for (unsigned int i = 0; i < reconstruct_ccs.size(); i++)
+    {
+        for (unsigned int j = 0; j < reconstruct_ccs.size(); j++)
+        {
+            std::cout << reconstruct_ccs[i][j] << " ";
+        }
+        std::cout << '\n';
+    }
 }
