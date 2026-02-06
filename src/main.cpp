@@ -1,12 +1,39 @@
 #include <iostream>
+#include <cassert>
 #include "Matrix.h"
 #include "CRS.h"
 #include "CCS.h"
 #include "SampleMatrix.h"
+#include "ReadMatrixFile.h"
+#include "types.h"
 
 int main()
 {
-    std::vector<std::vector<double>> mat = {{0., 1., 2.}, {1., 2., 3.}, {0., -12., 9.}, {3., 2., 7.}};
+
+    matrix ibm32 = read_dense_matrix("matrices/ibm32.mtx");
+
+    CRSMatrix ibm32_crs = read_crs("matrices/ibm32.mtx");
+
+    CRSMatrix ibm32_convert = to_crs(ibm32);
+
+    assert(ibm32_crs.num_cols == ibm32_convert.num_cols);
+    assert(ibm32_crs.num_rows == ibm32_convert.num_rows);
+    assert(ibm32_crs.col_ind.size() == ibm32_convert.col_ind.size());
+    assert(ibm32_crs.val.size() == ibm32_convert.val.size());
+    assert(ibm32_crs.row_ptr.size() == ibm32_convert.row_ptr.size());
+
+    for (unsigned int i = 0; i < ibm32_convert.col_ind.size(); i++)
+    {
+        assert(ibm32_crs.col_ind[i] == ibm32_convert.col_ind[i]);
+        assert(ibm32_crs.val[i] == ibm32_convert.val[i]);
+    }
+
+    for (unsigned int i = 0; i < ibm32_convert.row_ptr.size(); i++)
+    {
+        assert(ibm32_crs.row_ptr[i] == ibm32_convert.row_ptr[i]);
+    }
+
+    matrix mat = {{0., 1., 2.}, {1., 2., 3.}, {0., -12., 9.}, {3., 2., 7.}};
 
     auto crs = to_crs(mat);
 
