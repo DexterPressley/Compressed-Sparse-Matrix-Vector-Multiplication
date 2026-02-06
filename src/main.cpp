@@ -2,6 +2,7 @@
 #include "Matrix.h"
 #include "CRS.h"
 #include "CCS.h"
+#include "JDS.h"
 #include "SampleMatrix.h"
 
 int main()
@@ -75,4 +76,34 @@ int main()
         }
         std::cout << '\n';
     }
+
+    auto jds = to_jds(jds_test);
+
+    std::cout << "jdiag: ";
+    for (unsigned int i = 0; i < jds.jdiag.size(); i++)
+    {
+        std::cout << jds.jdiag[i] << " ";
+    }
+    std::cout << '\n';
+
+    std::cout << "col_ind: ";
+    for (unsigned int i = 0; i < jds.col_ind.size(); i++)
+    {
+        std::cout << jds.col_ind[i] << " ";
+    }
+    std::cout << '\n';
+
+    std::cout << "perm: ";
+    for (unsigned int i = 0; i < jds.perm.size(); i++)
+    {
+        std::cout << jds.perm[i] << " ";
+    }
+    std::cout << '\n';
+
+    std::cout << "jd_ptr: ";
+    for (unsigned int i = 0; i < jds.jd_ptr.size(); i++)
+    {
+        std::cout << jds.jd_ptr[i] << " ";
+    }
+    std::cout << '\n';
 }
