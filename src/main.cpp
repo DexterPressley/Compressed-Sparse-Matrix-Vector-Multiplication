@@ -106,4 +106,15 @@ int main()
         std::cout << jds.jd_ptr[i] << " ";
     }
     std::cout << '\n';
+
+    auto reconstruct_jds = from_jds(jds);
+
+    for (unsigned int i = 0; i < reconstruct_jds.size(); i++)
+    {
+        for (unsigned int j = 0; j < reconstruct_jds.size(); j++)
+        {
+            std::cout << reconstruct_jds[i][j] << " ";
+        }
+        std::cout << '\n';
+    }
 }

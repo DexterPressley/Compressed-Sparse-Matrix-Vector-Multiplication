@@ -22,13 +22,13 @@ static std::vector<unsigned int> per_row_nonzeros(const std::vector<std::vector<
 
 static std::vector<unsigned int> permute_descending(std::vector<unsigned int> nonzeros)
 {
+    // Use selection sort to set indices in nonzero-count-descending order.
     std::vector<unsigned int> permutation(nonzeros.size());
     for (unsigned int i = 0; i < permutation.size(); i++) 
     {
         permutation[i] = i;
     }
     
-    // Selection sort: for each position, find the max in remaining elements
     for (unsigned int i = 0; i < permutation.size(); i++)
     {
         unsigned int max_idx = i;
@@ -39,7 +39,7 @@ static std::vector<unsigned int> permute_descending(std::vector<unsigned int> no
                 max_idx = j;
             }
         }
-        // Swap max to position i
+        
         if (max_idx != i)
         {
             unsigned int temp = permutation[i];
@@ -117,7 +117,7 @@ std::vector<std::vector<float>> from_jds(struct JDSMatrix jds)
         return output;
     }
     
-    unsigned int num_diags = jds.jd_ptr.size() ? (jds.jd_ptr.size() - 1) : 0;
+    unsigned int num_diags = jds.jd_ptr.size();
     
     for (unsigned int i = 0; i < jds.num_rows; i++)
     {
@@ -125,13 +125,21 @@ std::vector<std::vector<float>> from_jds(struct JDSMatrix jds)
         for (unsigned int k = 0; k < num_diags; k++)
         {
             unsigned int start = jds.jd_ptr[k] - 1;
-            unsigned int end = jds.jd_ptr[k + 1] - 1;
+            unsigned int end;
+            if(k + 1 < jds.jd_ptr.size())
+            {
+                end = jds.jd_ptr[k + 1] - 1;
+            } 
+            else 
+            {
+                end = jds.jdiag.size();
+            }
             unsigned int len = end - start;
             if (i < len)
             {
                 unsigned int idx = start + i;
-                unsigned int j = jds.col_ind[idx] - 1;
-                output[orig][j] = jds.jdiag[idx];
+                unsigned int col = jds.col_ind[idx] - 1;
+                output[orig][col] = jds.jdiag[idx];
             }
         }
     }
