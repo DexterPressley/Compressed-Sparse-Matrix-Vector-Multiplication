@@ -60,13 +60,7 @@ std::vector<float> crs_vector_mult(CRSMatrix crs, std::vector<float> vec)
         float sum = 0;
         for (unsigned int j = crs.row_ptr[i]; j < crs.row_ptr[i + 1]; j++)
         {
-            // std::cout << vec[crs.col_ind[j]] << " " << crs.val[j] << ' ' << vec[crs.col_ind[j]] * crs.val[j] << ' ';
             sum += vec[crs.col_ind[j]] * crs.val[j];
-            // std::cout << output[crs.col_ind[j]] << '\n';
-            // for (int i = 0; i < vec.size(); i++) {
-            //     std::cout << '\t' << output[i];
-            // }
-            // std::cout << '\n';
         }
 
         output.push_back(sum);

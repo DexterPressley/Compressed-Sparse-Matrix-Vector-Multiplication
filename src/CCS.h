@@ -16,4 +16,6 @@ struct CCSMatrix
 struct CCSMatrix to_ccs(const std::vector<std::vector<float>> mat);
 std::vector<std::vector<float>> from_ccs(const struct CCSMatrix crs);
 
+std::vector<float> ccs_vector_mult(struct CCSMatrix ccs, std::vector<float> vec);
+
 #endif

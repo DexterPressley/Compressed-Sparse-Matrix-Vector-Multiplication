@@ -1,4 +1,5 @@
 #include "CCS.h"
+#include <cassert>
 
 CCSMatrix to_ccs(std::vector<std::vector<float>> mat)
 {
@@ -41,6 +42,24 @@ std::vector<std::vector<float>> from_ccs(CCSMatrix ccs)
         for (unsigned int j = ccs.col_ptr[i]; j < ccs.col_ptr[i + 1]; j++)
         {
             output[ccs.row_ind[j]][i] = ccs.val[j];
+        }
+    }
+
+    return output;
+}
+
+std::vector<float> ccs_vector_mult(CCSMatrix ccs, std::vector<float> vec)
+{
+
+    assert(vec.size() == ccs.num_cols);
+
+    std::vector<float> output(ccs.num_rows, 0);
+
+    for (unsigned int i = 0; i < ccs.col_ptr.size() - 1; i++)
+    {
+        for (unsigned int j = ccs.col_ptr[i]; j < ccs.col_ptr[i + 1]; j++)
+        {
+            output[ccs.row_ind[j]] += vec[i] * ccs.val[j];
         }
     }
 
