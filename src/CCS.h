@@ -2,6 +2,7 @@
 #define CCS_H
 
 #include <vector>
+#include "types.h"
 
 struct CCSMatrix
 {
@@ -13,8 +14,8 @@ struct CCSMatrix
     unsigned int non_zero;
 };
 
-struct CCSMatrix to_ccs(const std::vector<std::vector<double>> mat);
-std::vector<std::vector<double>> from_ccs(const struct CCSMatrix crs);
+struct CCSMatrix to_ccs(const matrix mat);
+matrix from_ccs(const struct CCSMatrix crs);
 
 std::vector<double> ccs_vector_mult(struct CCSMatrix ccs, std::vector<double> vec);
 

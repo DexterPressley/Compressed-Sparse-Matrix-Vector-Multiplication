@@ -2,6 +2,7 @@
 #define CRS_H
 
 #include <vector>
+#include "types.h"
 
 struct CRSMatrix
 {
@@ -13,8 +14,8 @@ struct CRSMatrix
     unsigned int non_zero;
 };
 
-struct CRSMatrix to_crs(const std::vector<std::vector<double>> mat);
-std::vector<std::vector<double>> from_crs(const struct CRSMatrix crs);
+struct CRSMatrix to_crs(const matrix mat);
+matrix from_crs(const struct CRSMatrix crs);
 std::vector<double> crs_vector_mult(struct CRSMatrix crs, std::vector<double> vec);
 
 #endif

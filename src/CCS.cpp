@@ -1,7 +1,7 @@
 #include "CCS.h"
 #include <cassert>
 
-CCSMatrix to_ccs(std::vector<std::vector<double>> mat)
+CCSMatrix to_ccs(matrix mat)
 {
     struct CCSMatrix out;
 
@@ -32,9 +32,9 @@ CCSMatrix to_ccs(std::vector<std::vector<double>> mat)
     return out;
 }
 
-std::vector<std::vector<double>> from_ccs(CCSMatrix ccs)
+matrix from_ccs(CCSMatrix ccs)
 {
-    std::vector<std::vector<double>>
+    matrix
         output(ccs.num_rows, std::vector<double>(ccs.num_cols, 0));
 
     for (unsigned int i = 0; i < ccs.col_ptr.size() - 1; i++)

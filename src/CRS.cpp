@@ -2,7 +2,7 @@
 #include "CRS.h"
 #include <iostream>
 
-CRSMatrix to_crs(std::vector<std::vector<double>> mat)
+CRSMatrix to_crs(matrix mat)
 {
     struct CRSMatrix out;
 
@@ -33,9 +33,9 @@ CRSMatrix to_crs(std::vector<std::vector<double>> mat)
     return out;
 }
 
-std::vector<std::vector<double>> from_crs(CRSMatrix crs)
+matrix from_crs(CRSMatrix crs)
 {
-    std::vector<std::vector<double>>
+    matrix
         output(crs.num_rows, std::vector<double>(crs.num_cols, 0));
 
     for (unsigned int i = 0; i < crs.row_ptr.size() - 1; i++)

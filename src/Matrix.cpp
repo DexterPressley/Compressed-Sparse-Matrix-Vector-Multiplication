@@ -1,7 +1,7 @@
 #include "Matrix.h"
 #include <cassert>
 
-std::vector<double> matrix_vector_mult(std::vector<std::vector<double>> matrix, std::vector<double> vector)
+std::vector<double> matrix_vector_mult(matrix matrix, std::vector<double> vector)
 {
     assert(matrix[0].size() == vector.size());
 
@@ -19,11 +19,11 @@ std::vector<double> matrix_vector_mult(std::vector<std::vector<double>> matrix, 
     return output;
 }
 
-std::vector<std::vector<double>> matrix_matrix_mult(std::vector<std::vector<double>> matrix_1, std::vector<std::vector<double>> matrix_2)
+matrix matrix_matrix_mult(matrix matrix_1, matrix matrix_2)
 {
     assert(matrix_1[0].size() == matrix_2.size());
 
-    std::vector<std::vector<double>> output{};
+    matrix output{};
 
     for (unsigned int i = 0; i < matrix_1.size(); i++)
     {
