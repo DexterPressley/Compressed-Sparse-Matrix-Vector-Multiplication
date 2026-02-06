@@ -3,6 +3,7 @@
 #include "Matrix.h"
 #include "CRS.h"
 #include "CCS.h"
+#include "JDS.h"
 #include "SampleMatrix.h"
 #include "ReadMatrixFile.h"
 #include "types.h"
@@ -132,6 +133,47 @@ int main()
     for (unsigned int i = 0; i < ccs_product.size(); i++)
     {
         std::cout << ccs_product[i] << ' ';
+    }
+
+    auto jds = to_jds(jds_test);
+
+    std::cout << "jdiag: ";
+    for (unsigned int i = 0; i < jds.jdiag.size(); i++)
+    {
+        std::cout << jds.jdiag[i] << " ";
+    }
+    std::cout << '\n';
+
+    std::cout << "col_ind: ";
+    for (unsigned int i = 0; i < jds.col_ind.size(); i++)
+    {
+        std::cout << jds.col_ind[i] << " ";
+    }
+    std::cout << '\n';
+
+    std::cout << "perm: ";
+    for (unsigned int i = 0; i < jds.perm.size(); i++)
+    {
+        std::cout << jds.perm[i] << " ";
+    }
+    std::cout << '\n';
+
+    std::cout << "jd_ptr: ";
+    for (unsigned int i = 0; i < jds.jd_ptr.size(); i++)
+    {
+        std::cout << jds.jd_ptr[i] << " ";
+    }
+    std::cout << '\n';
+
+    auto reconstruct_jds = from_jds(jds);
+
+    for (unsigned int i = 0; i < reconstruct_jds.size(); i++)
+    {
+        for (unsigned int j = 0; j < reconstruct_jds[i].size(); j++)
+        {
+            std::cout << reconstruct_jds[i][j] << " ";
+        }
+        std::cout << '\n';
     }
     std::cout << '\n';
 }
