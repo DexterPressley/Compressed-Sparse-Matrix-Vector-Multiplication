@@ -111,7 +111,7 @@ int main()
 
     for (unsigned int i = 0; i < reconstruct_jds.size(); i++)
     {
-        for (unsigned int j = 0; j < reconstruct_jds.size(); j++)
+        for (unsigned int j = 0; j < reconstruct_jds[i].size(); j++)
         {
             std::cout << reconstruct_jds[i][j] << " ";
         }
