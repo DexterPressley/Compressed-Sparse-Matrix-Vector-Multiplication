@@ -88,7 +88,7 @@ int main()
 
     // std::cout << "row_ptr: ";
     // for (unsigned int i = 0; i < ccs.col_ptr.size(); i++)
-    // {
+    // {0 0 0 0 9 13
     //     std::cout << ccs.col_ptr[i] << " ";
     // }
     // std::cout << '\n';
