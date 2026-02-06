@@ -15,5 +15,6 @@ struct CRSMatrix
 
 struct CRSMatrix to_crs(const std::vector<std::vector<float>> mat);
 std::vector<std::vector<float>> from_crs(const struct CRSMatrix crs);
+std::vector<float> crs_vector_mult(struct CRSMatrix crs, std::vector<float> vec);
 
 #endif
