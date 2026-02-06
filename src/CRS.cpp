@@ -1,6 +1,8 @@
+#include <cassert>
 #include "CRS.h"
+#include <iostream>
 
-CRSMatrix to_crs(std::vector<std::vector<float>> mat)
+CRSMatrix to_crs(matrix mat)
 {
     struct CRSMatrix out;
 
@@ -8,7 +10,7 @@ CRSMatrix to_crs(std::vector<std::vector<float>> mat)
     out.num_cols = mat[0].size();
     out.non_zero = 0;
 
-    out.val = std::vector<float>();
+    out.val = std::vector<double>();
 
     for (unsigned int i = 0; i < out.num_rows; i++)
     {
@@ -31,10 +33,10 @@ CRSMatrix to_crs(std::vector<std::vector<float>> mat)
     return out;
 }
 
-std::vector<std::vector<float>> from_crs(CRSMatrix crs)
+matrix from_crs(CRSMatrix crs)
 {
-    std::vector<std::vector<float>>
-        output(crs.num_rows, std::vector<float>(crs.num_cols, 0));
+    matrix
+        output(crs.num_rows, std::vector<double>(crs.num_cols, 0));
 
     for (unsigned int i = 0; i < crs.row_ptr.size() - 1; i++)
     {
@@ -42,6 +44,26 @@ std::vector<std::vector<float>> from_crs(CRSMatrix crs)
         {
             output[i][crs.col_ind[j]] = crs.val[j];
         }
+    }
+
+    return output;
+}
+
+std::vector<double> crs_vector_mult(CRSMatrix crs, std::vector<double> vec)
+{
+    assert(vec.size() == crs.num_cols);
+
+    std::vector<double> output{};
+
+    for (unsigned int i = 0; i < crs.row_ptr.size() - 1; i++)
+    {
+        double sum = 0;
+        for (unsigned int j = crs.row_ptr[i]; j < crs.row_ptr[i + 1]; j++)
+        {
+            sum += vec[crs.col_ind[j]] * crs.val[j];
+        }
+
+        output.push_back(sum);
     }
 
     return output;

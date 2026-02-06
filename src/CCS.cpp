@@ -1,6 +1,7 @@
 #include "CCS.h"
+#include <cassert>
 
-CCSMatrix to_ccs(std::vector<std::vector<float>> mat)
+CCSMatrix to_ccs(matrix mat)
 {
     struct CCSMatrix out;
 
@@ -8,7 +9,7 @@ CCSMatrix to_ccs(std::vector<std::vector<float>> mat)
     out.num_cols = mat[0].size();
     out.non_zero = 0;
 
-    out.val = std::vector<float>();
+    out.val = std::vector<double>();
 
     for (unsigned int i = 0; i < out.num_cols; i++)
     {
@@ -31,16 +32,34 @@ CCSMatrix to_ccs(std::vector<std::vector<float>> mat)
     return out;
 }
 
-std::vector<std::vector<float>> from_ccs(CCSMatrix ccs)
+matrix from_ccs(CCSMatrix ccs)
 {
-    std::vector<std::vector<float>>
-        output(ccs.num_rows, std::vector<float>(ccs.num_cols, 0));
+    matrix
+        output(ccs.num_rows, std::vector<double>(ccs.num_cols, 0));
 
     for (unsigned int i = 0; i < ccs.col_ptr.size() - 1; i++)
     {
         for (unsigned int j = ccs.col_ptr[i]; j < ccs.col_ptr[i + 1]; j++)
         {
             output[ccs.row_ind[j]][i] = ccs.val[j];
+        }
+    }
+
+    return output;
+}
+
+std::vector<double> ccs_vector_mult(CCSMatrix ccs, std::vector<double> vec)
+{
+
+    assert(vec.size() == ccs.num_cols);
+
+    std::vector<double> output(ccs.num_rows, 0);
+
+    for (unsigned int i = 0; i < ccs.col_ptr.size() - 1; i++)
+    {
+        for (unsigned int j = ccs.col_ptr[i]; j < ccs.col_ptr[i + 1]; j++)
+        {
+            output[ccs.row_ind[j]] += vec[i] * ccs.val[j];
         }
     }
 

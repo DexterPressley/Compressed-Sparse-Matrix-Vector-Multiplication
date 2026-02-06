@@ -1,6 +1,6 @@
 #include <vector>
 
-std::vector<std::vector<float>> problem_1 = {
+matrix problem_1 = {
     {10., 0., 0., 0., -2., 0.},
     {3., 9., 0., 0., 0., 0.},
     {0., 0., 8., 7., 3., 0.},
