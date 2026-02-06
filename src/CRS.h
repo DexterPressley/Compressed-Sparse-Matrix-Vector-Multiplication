@@ -5,7 +5,7 @@
 
 struct CRSMatrix
 {
-    std::vector<float> val;
+    std::vector<double> val;
     std::vector<unsigned int> col_ind;
     std::vector<unsigned int> row_ptr;
     unsigned int num_rows;
@@ -13,8 +13,8 @@ struct CRSMatrix
     unsigned int non_zero;
 };
 
-struct CRSMatrix to_crs(const std::vector<std::vector<float>> mat);
-std::vector<std::vector<float>> from_crs(const struct CRSMatrix crs);
-std::vector<float> crs_vector_mult(struct CRSMatrix crs, std::vector<float> vec);
+struct CRSMatrix to_crs(const std::vector<std::vector<double>> mat);
+std::vector<std::vector<double>> from_crs(const struct CRSMatrix crs);
+std::vector<double> crs_vector_mult(struct CRSMatrix crs, std::vector<double> vec);
 
 #endif

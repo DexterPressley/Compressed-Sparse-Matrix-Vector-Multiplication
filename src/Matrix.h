@@ -3,8 +3,8 @@
 
 #include <vector>
 
-std::vector<float> matrix_vector_mult(std::vector<std::vector<float>> matrix, std::vector<float> vector);
+std::vector<double> matrix_vector_mult(std::vector<std::vector<double>> matrix, std::vector<double> vector);
 
-std::vector<std::vector<float>> matrix_matrix_mult(std::vector<std::vector<float>> matrix_1, std::vector<std::vector<float>> matrix_2);
+std::vector<std::vector<double>> matrix_matrix_mult(std::vector<std::vector<double>> matrix_1, std::vector<std::vector<double>> matrix_2);
 
 #endif

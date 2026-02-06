@@ -5,7 +5,7 @@
 
 struct CCSMatrix
 {
-    std::vector<float> val;
+    std::vector<double> val;
     std::vector<unsigned int> row_ind;
     std::vector<unsigned int> col_ptr;
     unsigned int num_rows;
@@ -13,9 +13,9 @@ struct CCSMatrix
     unsigned int non_zero;
 };
 
-struct CCSMatrix to_ccs(const std::vector<std::vector<float>> mat);
-std::vector<std::vector<float>> from_ccs(const struct CCSMatrix crs);
+struct CCSMatrix to_ccs(const std::vector<std::vector<double>> mat);
+std::vector<std::vector<double>> from_ccs(const struct CCSMatrix crs);
 
-std::vector<float> ccs_vector_mult(struct CCSMatrix ccs, std::vector<float> vec);
+std::vector<double> ccs_vector_mult(struct CCSMatrix ccs, std::vector<double> vec);
 
 #endif
