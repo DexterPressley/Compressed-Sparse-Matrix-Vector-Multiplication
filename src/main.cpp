@@ -7,183 +7,251 @@
 #include "SampleMatrix.h"
 #include "ReadMatrixFile.h"
 #include "types.h"
+#include <chrono>
 
-int main()
+void problem_1()
 {
+    // CRS
+
+    CRSMatrix crs = to_crs(problem_1_mat);
+
+    std::cout << "CRS Data Structures\n";
+
+    std::cout
+        << "val:\t";
+    for (unsigned int i = 0; i < crs.val.size(); i++)
+    {
+        std::cout << crs.val[i] << '\t';
+    }
+    std::cout << '\n';
+
+    std::cout << "col_ind:\t";
+    for (unsigned int i = 0; i < crs.col_ind.size(); i++)
+    {
+        std::cout << crs.col_ind[i] << '\t';
+    }
+    std::cout << '\n';
+
+    std::cout << "row_ptr:\t";
+    for (unsigned int i = 0; i < crs.row_ptr.size(); i++)
+    {
+        std::cout << crs.row_ptr[i] << '\t';
+    }
+    std::cout << '\n';
+    std::cout << '\n';
+
+    // CCS
+
+    CCSMatrix ccs = to_ccs(problem_1_mat);
+
+    std::cout << "CCS Data Structures\n";
+
+    std::cout
+        << "val:\t";
+    for (unsigned int i = 0; i < ccs.val.size(); i++)
+    {
+        std::cout << ccs.val[i] << '\t';
+    }
+    std::cout << '\n';
+
+    std::cout << "row_ind:\t";
+    for (unsigned int i = 0; i < ccs.row_ind.size(); i++)
+    {
+        std::cout << ccs.row_ind[i] << '\t';
+    }
+    std::cout << '\n';
+
+    std::cout << "row_ptr:\t";
+    for (unsigned int i = 0; i < ccs.col_ptr.size(); i++)
+    {
+        std::cout << ccs.col_ptr[i] << '\t';
+    }
+    std::cout << '\n';
+    std::cout << '\n';
+
+    JDSMatrix jds = to_jds(problem_1_mat);
+
+    std::cout << "JDS Data Structures\n";
+
+    std::cout
+        << "jdiag:\t";
+    for (unsigned int i = 0; i < jds.jdiag.size(); i++)
+    {
+        std::cout << jds.jdiag[i] << '\t';
+    }
+    std::cout << '\n';
+
+    std::cout << "row_ind:\t";
+    for (unsigned int i = 0; i < jds.col_ind.size(); i++)
+    {
+        std::cout << jds.col_ind[i] << '\t';
+    }
+    std::cout << '\n';
+
+    std::cout << "jd_ptr:\t";
+    for (unsigned int i = 0; i < jds.jd_ptr.size(); i++)
+    {
+        std::cout << jds.jd_ptr[i] << '\t';
+    }
+    std::cout << '\n';
+
+    std::cout << "perm:\t";
+    for (unsigned int i = 0; i < jds.perm.size(); i++)
+    {
+        std::cout << jds.perm[i] << '\t';
+    }
+    std::cout << '\n';
+    std::cout << '\n';
+
+    TJDSMatrix tjds = to_tjds(problem_1_mat);
+    std::cout << "TJDS Data Structures\n";
+
+    std::cout
+        << "jdiag:\t";
+    for (unsigned int i = 0; i < tjds.jdiag.size(); i++)
+    {
+        std::cout << tjds.jdiag[i] << '\t';
+    }
+    std::cout << '\n';
+
+    std::cout << "row_ind:\t";
+    for (unsigned int i = 0; i < tjds.row_ind.size(); i++)
+    {
+        std::cout << tjds.row_ind[i] << '\t';
+    }
+    std::cout << '\n';
+
+    std::cout << "jd_ptr:\t";
+    for (unsigned int i = 0; i < tjds.jd_ptr.size(); i++)
+    {
+        std::cout << tjds.jd_ptr[i] << '\t';
+    }
+    std::cout << '\n';
+
+    std::cout << "perm:\t";
+    for (unsigned int i = 0; i < tjds.perm.size(); i++)
+    {
+        std::cout << tjds.perm[i] << '\t';
+    }
+    std::cout << '\n';
+    std::cout << '\n';
+}
+
+void problem_2()
+{
+    std::vector<double> x(32, 1.);
 
     matrix ibm32 = read_dense_matrix("matrices/ibm32.mtx");
 
-    TJDSMatrix ibm32_tjds = read_tjds("matrices/ibm32.mtx");
-
-    TJDSMatrix ibm32_convert = to_tjds(ibm32);
-
-    assert(ibm32_tjds.num_cols == ibm32_convert.num_cols);
-    assert(ibm32_tjds.num_rows == ibm32_convert.num_rows);
-    assert(ibm32_tjds.row_ind.size() == ibm32_convert.row_ind.size());
-    assert(ibm32_tjds.perm.size() == ibm32_convert.perm.size());
-    assert(ibm32_tjds.jd_ptr.size() == ibm32_convert.jd_ptr.size());
-    assert(ibm32_tjds.jdiag.size() == ibm32_convert.jdiag.size());
-
-    std::cout << "row_ind:\t";
-
-    for (unsigned int i = 0; i < ibm32_tjds.row_ind.size(); i++)
+    auto t1 = std::chrono::high_resolution_clock::now();
+    for (unsigned int i = 0; i < 1000; i++)
     {
-        assert(ibm32_tjds.row_ind[i] == ibm32_convert.row_ind[i]);
+        std::vector<double> ans = matrix_vector_mult(ibm32, x);
     }
-    std::cout << '\n';
-    for (unsigned int i = 0; i < ibm32_tjds.perm.size(); i++)
+    auto t2 = std::chrono::high_resolution_clock::now();
+    std::cout << "IBM32 dense matrix mult took "
+              << std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count()
+              << " milliseconds for 1000 iterations\n";
+
+    t1 = std::chrono::high_resolution_clock::now();
+    for (unsigned int i = 0; i < 10000; i++)
     {
-        assert(ibm32_tjds.perm[i] == ibm32_convert.perm[i]);
+        std::vector<double> ans = matrix_vector_mult(ibm32, x);
     }
-    for (unsigned int i = 0; i < ibm32_tjds.jd_ptr.size(); i++)
+    t2 = std::chrono::high_resolution_clock::now();
+    std::cout << "IBM32 dense matrix mult took "
+              << std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count()
+              << " milliseconds for 10000 iterations\n";
+}
+
+void problem_3()
+{
+    std::vector<double> x(32, 1.);
+
+    CRSMatrix ibm32 = read_crs("matrices/ibm32.mtx");
+
+    auto t1 = std::chrono::high_resolution_clock::now();
+    for (unsigned int i = 0; i < 1000; i++)
     {
-        assert(ibm32_tjds.jd_ptr[i] == ibm32_convert.jd_ptr[i]);
+        std::vector<double> ans = crs_vector_mult(ibm32, x);
     }
-    for (unsigned int i = 0; i < ibm32_tjds.jdiag.size(); i++)
+    auto t2 = std::chrono::high_resolution_clock::now();
+    std::cout << "IBM32 crs matrix mult took "
+              << std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count()
+              << " milliseconds for 1000 iterations\n";
+
+    t1 = std::chrono::high_resolution_clock::now();
+    for (unsigned int i = 0; i < 10000; i++)
     {
-        assert(ibm32_tjds.jdiag[i] == ibm32_convert.jdiag[i]);
+        std::vector<double> ans = crs_vector_mult(ibm32, x);
     }
+    t2 = std::chrono::high_resolution_clock::now();
+    std::cout << "IBM32 crs matrix mult took "
+              << std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count()
+              << " milliseconds for 10000 iterations\n";
+}
 
-    matrix mat = {{0., 1., 2.}, {1., 2., 3.}, {0., -12., 9.}, {3., 2., 7.}};
+void problem_4_1()
+{
+    CRSMatrix memplus = read_crs("matrices/memplus.mtx");
+    std::vector<double> x(memplus.num_cols, 1.);
 
-    auto crs = to_crs(mat);
-
-    std::cout << "val: ";
-    for (unsigned int i = 0; i < crs.val.size(); i++)
+    auto t1 = std::chrono::high_resolution_clock::now();
+    for (unsigned int i = 0; i < 1000; i++)
     {
-        std::cout << crs.val[i] << " ";
+        std::vector<double> ans = crs_vector_mult(memplus, x);
     }
-    std::cout << '\n';
+    auto t2 = std::chrono::high_resolution_clock::now();
+    std::cout << "MEMPLUS crs matrix mult took "
+              << std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count()
+              << " milliseconds for 1000 iterations\n";
 
-    std::cout << "col_ind: ";
-    for (unsigned int i = 0; i < crs.col_ind.size(); i++)
+    t1 = std::chrono::high_resolution_clock::now();
+    for (unsigned int i = 0; i < 10000; i++)
     {
-        std::cout << crs.col_ind[i] << " ";
+        std::vector<double> ans = crs_vector_mult(memplus, x);
     }
-    std::cout << '\n';
+    t2 = std::chrono::high_resolution_clock::now();
+    std::cout << "MEMPLUS crs matrix mult took "
+              << std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count()
+              << " milliseconds for 10000 iterations\n";
+}
 
-    std::cout << "row_ptr: ";
-    for (unsigned int i = 0; i < crs.row_ptr.size(); i++)
+void problem_4_2()
+{
+    TJDSMatrix memplus_tjds = read_tjds("matrices/memplus.mtx");
+    std::vector<double> x(memplus_tjds.num_cols, 1.);
+
+    auto t1 = std::chrono::high_resolution_clock::now();
+    for (unsigned int i = 0; i < 1000; i++)
     {
-        std::cout << crs.row_ptr[i] << " ";
+        std::vector<double> ans = tjds_matrix_vector_mult(memplus_tjds, x);
     }
-    std::cout << '\n';
+    auto t2 = std::chrono::high_resolution_clock::now();
+    std::cout << "MEMPLUS tjds matrix mult took "
+              << std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count()
+              << " milliseconds for 1000 iterations\n";
 
-    auto reconstruct_crs = from_crs(crs);
-
-    // for (unsigned int i = 0; i < reconstruct_crs.size(); i++)
-    // {
-    //     for (unsigned int j = 0; j < reconstruct_crs.size(); j++)
-    //     {
-    //         std::cout << reconstruct_crs[i][j] << " ";
-    //     }
-    //     std::cout << '\n';
-    // }
-
-    auto ccs = to_ccs(mat);
-
-    // std::cout << "val: ";
-    // for (unsigned int i = 0; i < ccs.val.size(); i++)
-    // {
-    //     std::cout << ccs.val[i] << " ";
-    // }
-    // std::cout << '\n';
-
-    // std::cout << "col_ind: ";
-    // for (unsigned int i = 0; i < ccs.row_ind.size(); i++)
-    // {
-    //     std::cout << ccs.row_ind[i] << " ";
-    // }
-    // std::cout << '\n';
-
-    // std::cout << "row_ptr: ";
-    // for (unsigned int i = 0; i < ccs.col_ptr.size(); i++)
-    // {0 0 0 0 9 13
-    //     std::cout << ccs.col_ptr[i] << " ";
-    // }
-    // std::cout << '\n';
-
-    auto reconstruct_ccs = from_ccs(ccs);
-
-    // for (unsigned int i = 0; i < reconstruct_ccs.size(); i++)
-    // {
-    //     for (unsigned int j = 0; j < reconstruct_ccs.size(); j++)
-    //     {
-    //         std::cout << reconstruct_ccs[i][j] << " ";
-    //     }
-    //     std::cout << '\n';
-    // }
-
-    std::cout << '\n';
-
-    std::vector<double> test = {
-        3.,
-        1.,
-        2.,
-    };
-
-    std::vector<double> matrix_product = matrix_vector_mult(mat, test);
-
-    std::vector<double> crs_product = crs_vector_mult(crs, test);
-
-    std::vector<double> ccs_product = ccs_vector_mult(ccs, test);
-
-    for (unsigned int i = 0; i < matrix_product.size(); i++)
+    t1 = std::chrono::high_resolution_clock::now();
+    for (unsigned int i = 0; i < 10000; i++)
     {
-        std::cout << matrix_product[i] << ' ';
+        std::vector<double> ans = tjds_matrix_vector_mult(memplus_tjds, x);
     }
-    std::cout << '\n';
+    t2 = std::chrono::high_resolution_clock::now();
+    std::cout << "MEMPLUS tjds matrix mult took "
+              << std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count()
+              << " milliseconds for 10000 iterations\n";
+}
 
-    for (unsigned int i = 0; i < crs_product.size(); i++)
-    {
-        std::cout << crs_product[i] << ' ';
-    }
-    std::cout << '\n';
-
-    for (unsigned int i = 0; i < ccs_product.size(); i++)
-    {
-        std::cout << ccs_product[i] << ' ';
-    }
-
-    auto jds = to_jds(jds_test);
-
-    std::cout << "jdiag: ";
-    for (unsigned int i = 0; i < jds.jdiag.size(); i++)
-    {
-        std::cout << jds.jdiag[i] << " ";
-    }
-    std::cout << '\n';
-
-    std::cout << "col_ind: ";
-    for (unsigned int i = 0; i < jds.col_ind.size(); i++)
-    {
-        std::cout << jds.col_ind[i] << " ";
-    }
-    std::cout << '\n';
-
-    std::cout << "perm: ";
-    for (unsigned int i = 0; i < jds.perm.size(); i++)
-    {
-        std::cout << jds.perm[i] << " ";
-    }
-    std::cout << '\n';
-
-    std::cout << "jd_ptr: ";
-    for (unsigned int i = 0; i < jds.jd_ptr.size(); i++)
-    {
-        std::cout << jds.jd_ptr[i] << " ";
-    }
-    std::cout << '\n';
-
-    auto reconstruct_jds = from_jds(jds);
-
-    for (unsigned int i = 0; i < reconstruct_jds.size(); i++)
-    {
-        for (unsigned int j = 0; j < reconstruct_jds[i].size(); j++)
-        {
-            std::cout << reconstruct_jds[i][j] << " ";
-        }
-        std::cout << '\n';
-    }
-    std::cout << '\n';
+int main()
+{
+    std::cout << "\n\nPROBLEM 1:\n\n";
+    problem_1();
+    std::cout << "\n\nPROBLEM 2:\n\n";
+    problem_2();
+    std::cout << "\n\nPROBLEM 3:\n\n";
+    problem_3();
+    std::cout << "\n\nPROBLEM 4:\n\n";
+    // problem_4_1();
+    problem_4_2();
 }

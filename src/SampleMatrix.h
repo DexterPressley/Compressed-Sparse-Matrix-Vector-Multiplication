@@ -1,6 +1,6 @@
 #include <vector>
 
-matrix problem_1 = {
+matrix problem_1_mat = {
     {10., 0., 0., 0., -2., 0.},
     {3., 9., 0., 0., 0., 0.},
     {0., 0., 8., 7., 3., 0.},
