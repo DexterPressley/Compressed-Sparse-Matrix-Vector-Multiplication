@@ -130,32 +130,6 @@ std::vector<std::vector<double>> from_tjds(struct TJDSMatrix tjds)
     }
 
     unsigned int num_diags = tjds.jd_ptr.size();
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-
-    for (unsigned int j = 0; j < tjds.num_cols; j++)
-    {
-        unsigned int orig = tjds.perm[j] - 1; // Convert from 1-based to 0-based
-        for (unsigned int k = 0; k < num_diags; k++)
-        {
-            unsigned int start = tjds.jd_ptr[k] - 1;
-            unsigned int end;
-            if (k + 1 < tjds.jd_ptr.size())
-            {
-                end = tjds.jd_ptr[k + 1] - 1;
-            }
-            else
-            {
-                end = tjds.jdiag.size();
-            }
-            unsigned int len = end - start;
-            if (j < len)
-            {
-                unsigned int idx = start + j;
-                unsigned int row = tjds.row_ind[idx] - 1;
-                output[row][orig] = tjds.jdiag[idx];
-            }
-=======
     
     for (unsigned int k = 0; k < num_diags; k++)
     {
@@ -163,15 +137,6 @@ std::vector<std::vector<double>> from_tjds(struct TJDSMatrix tjds)
         unsigned int end;
         if(k + 1 < tjds.jd_ptr.size())
         {
-=======
-    
-    for (unsigned int k = 0; k < num_diags; k++)
-    {
-        unsigned int start = tjds.jd_ptr[k] - 1;
-        unsigned int end;
-        if(k + 1 < tjds.jd_ptr.size())
-        {
->>>>>>> Stashed changes
             end = tjds.jd_ptr[k + 1] - 1;
         }
         else
@@ -185,10 +150,6 @@ std::vector<std::vector<double>> from_tjds(struct TJDSMatrix tjds)
             unsigned int row = tjds.row_ind[idx] - 1;
             unsigned int orig = tjds.perm[j] - 1;
             output[row][orig] = tjds.jdiag[idx];
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
         }
     }
 
@@ -197,51 +158,11 @@ std::vector<std::vector<double>> from_tjds(struct TJDSMatrix tjds)
 
 std::vector<double> tjds_matrix_vector_mult(struct TJDSMatrix tjds, std::vector<double> x)
 {
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
     std::vector<double> y(tjds.num_rows, 0.0f);
-    if (tjds.num_rows == 0 || tjds.num_cols == 0)
-        return y;
-
-    unsigned int num_diags = tjds.jd_ptr.size();
-
-    for (unsigned int j = 0; j < tjds.num_cols; j++)
-    {
-        unsigned int orig = tjds.perm[j] - 1; // Convert from 1-based to 0-based
-        for (unsigned int k = 0; k < num_diags; k++)
-        {
-            unsigned int start = tjds.jd_ptr[k] - 1;
-            unsigned int end;
-            if (k + 1 < tjds.jd_ptr.size())
-            {
-                end = tjds.jd_ptr[k + 1] - 1;
-            }
-            else
-            {
-                end = tjds.jdiag.size();
-            }
-            unsigned int len = end - start;
-            if (j < len)
-            {
-                unsigned int idx = start + j;
-                unsigned int row = tjds.row_ind[idx] - 1;
-                y[row] += tjds.jdiag[idx] * x[orig];
-            }
-=======
-    std::vector<float> y(tjds.num_rows, 0.0f);
     if (tjds.num_rows == 0 || tjds.num_cols == 0) return y;
     
     // Permute x to match TJDS column ordering
-    std::vector<float> x_perm(tjds.num_cols);
-    for (unsigned int j = 0; j < tjds.num_cols; j++)
-    {
-        x_perm[j] = x[tjds.perm[j] - 1];
-=======
-    std::vector<float> y(tjds.num_rows, 0.0f);
-    if (tjds.num_rows == 0 || tjds.num_cols == 0) return y;
-    
-    // Permute x to match TJDS column ordering
-    std::vector<float> x_perm(tjds.num_cols);
+    std::vector<double> x_perm(tjds.num_cols);
     for (unsigned int j = 0; j < tjds.num_cols; j++)
     {
         x_perm[j] = x[tjds.perm[j] - 1];
@@ -269,33 +190,6 @@ std::vector<double> tjds_matrix_vector_mult(struct TJDSMatrix tjds, std::vector<
             unsigned int row = tjds.row_ind[j] - 1;
             y[row] += tjds.jdiag[j] * x_perm[j_idx];  // Use permuted x
             j_idx++;
-        }
->>>>>>> Stashed changes
-    }
-    
-    unsigned int num_diags = tjds.jd_ptr.size();
-    
-    // For each TJD, multiply nonzeros by x to add to y.
-    for (unsigned int k = 0; k < num_diags; k++)
-    {
-        unsigned int start = tjds.jd_ptr[k] - 1;
-        unsigned int end;
-        if (k + 1 < tjds.jd_ptr.size())
-        {
-            end = tjds.jd_ptr[k + 1] - 1;
-        }
-        else
-        {
-            end = tjds.jdiag.size();
-        }
-        
-        unsigned int j_idx = 0;
-        for (unsigned int j = start; j < end; j++)
-        {
-            unsigned int row = tjds.row_ind[j] - 1;
-            y[row] += tjds.jdiag[j] * x_perm[j_idx];  // Use permuted x
-            j_idx++;
->>>>>>> Stashed changes
         }
     }
 
