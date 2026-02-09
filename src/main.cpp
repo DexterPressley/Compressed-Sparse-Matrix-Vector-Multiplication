@@ -244,7 +244,6 @@ void problem_4_2()
               << " milliseconds for 10000 iterations\n";
 }
 
-<<<<<<< Updated upstream
 int main()
 {
     std::cout << "\n\nPROBLEM 1:\n\n";
@@ -256,80 +255,4 @@ int main()
     std::cout << "\n\nPROBLEM 4:\n\n";
     problem_4_1();
     problem_4_2();
-=======
-    auto jds = to_jds(jds_test);
-
-    std::cout << "\njdiag: ";
-    for (unsigned int i = 0; i < jds.jdiag.size(); i++)
-    {
-        std::cout << jds.jdiag[i] << " ";
-    }
-    std::cout << '\n';
-
-    std::cout << "col_ind: ";
-    for (unsigned int i = 0; i < jds.col_ind.size(); i++)
-    {
-        std::cout << jds.col_ind[i] << " ";
-    }
-    std::cout << '\n';
-
-    std::cout << "perm: ";
-    for (unsigned int i = 0; i < jds.perm.size(); i++)
-    {
-        std::cout << jds.perm[i] << " ";
-    }
-    std::cout << '\n';
-
-    std::cout << "jd_ptr: ";
-    for (unsigned int i = 0; i < jds.jd_ptr.size(); i++)
-    {
-        std::cout << jds.jd_ptr[i] << " ";
-    }
-    std::cout << '\n';
-
-    auto reconstruct_jds = from_jds(jds);
-
-    for (unsigned int i = 0; i < reconstruct_jds.size(); i++)
-    {
-        for (unsigned int j = 0; j < reconstruct_jds[i].size(); j++)
-        {
-            std::cout << reconstruct_jds[i][j] << " ";
-        }
-        std::cout << '\n';
-    }
-    std::cout << '\n';
-
-    auto jds1 = to_jds(decimal_test);
-    // JDS matrix-vector multiplication example
-    std::cout << "JDS matrix-vector multiplication:\n";
-    std::vector<float> x = {1.0f, 2.0f, 3.0f};
-    std::vector<float> y_jds = jds_matrix_vector_mult(jds1, x_test);
-    std::cout << "x: ";
-    for (unsigned int i = 0; i < x_test.size(); i++)
-    {
-        std::cout << x_test[i] << " ";
-    }
-    std::cout << "\ny: ";
-    for (unsigned int i = 0; i < y_jds.size(); i++)
-    {
-        std::cout << y_jds[i] << " ";
-    }
-    std::cout << "\n\n";
-
-    // TJDS matrix-vector multiplication example
-    std::cout << "TJDS matrix-vector multiplication:\n";
-    auto tjds = to_tjds(decimal_test);
-    std::vector<float> y_tjds = tjds_matrix_vector_mult(tjds, x_test);
-    std::cout << "x: ";
-    for (unsigned int i = 0; i < x_test.size(); i++)
-    {
-        std::cout << x_test[i] << " ";
-    }
-    std::cout << "\ny: ";
-    for (unsigned int i = 0; i < y_tjds.size(); i++)
-    {
-        std::cout << y_tjds[i] << " ";
-    }
-    std::cout << "\n";
->>>>>>> Stashed changes
 }

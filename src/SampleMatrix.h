@@ -51,15 +51,11 @@ std::vector<double> y_result = {
     55. * 5. + 56. * 6.,
     65. * 5. + 66. * 6.};
 
-<<<<<<< Updated upstream
 std::vector<double> y_empty = {
-    0., 0., 0., 0., 0., 0.};
-=======
-std::vector<float> y_empty = {
     0., 0., 0., 0., 0., 0.
 };
 
-std::vector<std::vector<float>> decimal_test = {
+std::vector<std::vector<double>> decimal_test = {
     {1., 2., 3., 4., 5., 6.},
     {10., 20., 30., 40., 50., 60.},
     {100., 200., 300., 400., 500., 600.},
@@ -68,11 +64,10 @@ std::vector<std::vector<float>> decimal_test = {
     {100000., 200000., 300000., 400000., 500000., 600000.}
 };
 
-std::vector<float> x_test = {
+std::vector<double> x_test = {
     1., 2., 3., 4., 5., 6.
 };
 
-std::vector<float> y_test = {
+std::vector<double> y_test = {
     0., 0., 0., 0., 0., 0.
 };
->>>>>>> Stashed changes
