@@ -4,6 +4,7 @@
 #include "CRS.h"
 #include "CCS.h"
 #include "JDS.h"
+#include "TJDS.h"
 #include "SampleMatrix.h"
 #include "ReadMatrixFile.h"
 #include "types.h"
