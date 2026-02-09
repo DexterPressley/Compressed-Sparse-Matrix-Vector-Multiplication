@@ -244,6 +244,7 @@ void problem_4_2()
               << " milliseconds for 10000 iterations\n";
 }
 
+<<<<<<< Updated upstream
 int main()
 {
     std::cout << "\n\nPROBLEM 1:\n\n";
