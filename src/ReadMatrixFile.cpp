@@ -242,6 +242,10 @@ TJDSMatrix read_tjds(std::string file_path)
         {
             if (isspace(line[chr]))
             {
+                if (current_word.length() == 0)
+                {
+                    continue;
+                }
                 inputs.push_back(current_word);
                 current_word = "";
                 continue;
@@ -320,6 +324,10 @@ TJDSMatrix read_tjds(std::string file_path)
         {
             if (col_index_list[forward_perm[j]].size() > k)
             {
+                // assert(col_index_list.size() > forward_perm[j]);
+                // assert(col_value_list.size() > forward_perm[j]);
+                // assert(col_index_list[forward_perm[j]].size() > k);
+                // assert(col_value_list[forward_perm[j]].size() > k);
                 out.row_ind.push_back(col_index_list[forward_perm[j]][k] + 1);
                 out.jdiag.push_back(col_value_list[forward_perm[j]][k]);
             }
