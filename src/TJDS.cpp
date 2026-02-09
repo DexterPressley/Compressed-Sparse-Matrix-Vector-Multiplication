@@ -131,6 +131,7 @@ std::vector<std::vector<double>> from_tjds(struct TJDSMatrix tjds)
 
     unsigned int num_diags = tjds.jd_ptr.size();
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 
     for (unsigned int j = 0; j < tjds.num_cols; j++)
     {
@@ -184,6 +185,9 @@ std::vector<std::vector<double>> from_tjds(struct TJDSMatrix tjds)
             unsigned int row = tjds.row_ind[idx] - 1;
             unsigned int orig = tjds.perm[j] - 1;
             output[row][orig] = tjds.jdiag[idx];
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
         }
     }
@@ -193,6 +197,7 @@ std::vector<std::vector<double>> from_tjds(struct TJDSMatrix tjds)
 
 std::vector<double> tjds_matrix_vector_mult(struct TJDSMatrix tjds, std::vector<double> x)
 {
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
     std::vector<double> y(tjds.num_rows, 0.0f);
     if (tjds.num_rows == 0 || tjds.num_cols == 0)
@@ -231,6 +236,7 @@ std::vector<double> tjds_matrix_vector_mult(struct TJDSMatrix tjds, std::vector<
     for (unsigned int j = 0; j < tjds.num_cols; j++)
     {
         x_perm[j] = x[tjds.perm[j] - 1];
+=======
     std::vector<float> y(tjds.num_rows, 0.0f);
     if (tjds.num_rows == 0 || tjds.num_cols == 0) return y;
     
@@ -264,6 +270,7 @@ std::vector<double> tjds_matrix_vector_mult(struct TJDSMatrix tjds, std::vector<
             y[row] += tjds.jdiag[j] * x_perm[j_idx];  // Use permuted x
             j_idx++;
         }
+>>>>>>> Stashed changes
     }
     
     unsigned int num_diags = tjds.jd_ptr.size();
