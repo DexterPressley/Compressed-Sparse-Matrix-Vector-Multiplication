@@ -146,3 +146,38 @@ std::vector<std::vector<float>> from_jds(struct JDSMatrix jds)
     
     return output;
 }
+
+std::vector<float> jds_matrix_vector_mult(struct JDSMatrix jds, std::vector<float> x)
+{
+    std::vector<float> y(jds.num_rows, 0.0f);
+    if (jds.num_rows == 0 || jds.num_cols == 0) return y;
+    
+    unsigned int num_diags = jds.jd_ptr.size();
+    
+    for (unsigned int i = 0; i < jds.num_rows; i++)
+    {
+        unsigned int orig = jds.perm[i] - 1;  // Convert from 1-based to 0-based
+        for (unsigned int k = 0; k < num_diags; k++)
+        {
+            unsigned int start = jds.jd_ptr[k] - 1;
+            unsigned int end;
+            if(k + 1 < jds.jd_ptr.size())
+            {
+                end = jds.jd_ptr[k + 1] - 1;
+            } 
+            else 
+            {
+                end = jds.jdiag.size();
+            }
+            unsigned int len = end - start;
+            if (i < len)
+            {
+                unsigned int idx = start + i;
+                unsigned int col = jds.col_ind[idx] - 1;
+                y[orig] += jds.jdiag[idx] * x[col];
+            }
+        }
+    }
+    
+    return y;
+}

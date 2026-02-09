@@ -155,3 +155,38 @@ std::vector<std::vector<float>> from_tjds(struct TJDSMatrix tjds)
     
     return output;
 }
+
+std::vector<float> tjds_matrix_vector_mult(struct TJDSMatrix tjds, std::vector<float> x)
+{
+    std::vector<float> y(tjds.num_rows, 0.0f);
+    if (tjds.num_rows == 0 || tjds.num_cols == 0) return y;
+    
+    unsigned int num_diags = tjds.jd_ptr.size();
+    
+    for (unsigned int j = 0; j < tjds.num_cols; j++)
+    {
+        unsigned int orig = tjds.perm[j] - 1;  // Convert from 1-based to 0-based
+        for (unsigned int k = 0; k < num_diags; k++)
+        {
+            unsigned int start = tjds.jd_ptr[k] - 1;
+            unsigned int end;
+            if(k + 1 < tjds.jd_ptr.size())
+            {
+                end = tjds.jd_ptr[k + 1] - 1;
+            } 
+            else 
+            {
+                end = tjds.jdiag.size();
+            }
+            unsigned int len = end - start;
+            if (j < len)
+            {
+                unsigned int idx = start + j;
+                unsigned int row = tjds.row_ind[idx] - 1;
+                y[row] += tjds.jdiag[idx] * x[orig];
+            }
+        }
+    }
+    
+    return y;
+}

@@ -15,5 +15,6 @@ struct JDSMatrix
 
 struct JDSMatrix to_jds(std::vector<std::vector<float>> mat);
 std::vector<std::vector<float>> from_jds(struct JDSMatrix jds);
+std::vector<float> jds_matrix_vector_mult(struct JDSMatrix jds, std::vector<float> x);
 
 #endif

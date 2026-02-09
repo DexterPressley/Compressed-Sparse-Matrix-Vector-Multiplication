@@ -15,5 +15,6 @@ struct TJDSMatrix
 
 struct TJDSMatrix to_tjds(std::vector<std::vector<float>> mat);
 std::vector<std::vector<float>> from_tjds(struct TJDSMatrix tjds);
+std::vector<float> tjds_matrix_vector_mult(struct TJDSMatrix tjds, std::vector<float> x);
 
 #endif
