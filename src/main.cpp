@@ -21,21 +21,21 @@ void problem_1()
         << "val:\t";
     for (unsigned int i = 0; i < crs.val.size(); i++)
     {
-        std::cout << crs.val[i] << '\t';
+        std::cout << crs.val[i] << ',';
     }
     std::cout << '\n';
 
     std::cout << "col_ind:\t";
     for (unsigned int i = 0; i < crs.col_ind.size(); i++)
     {
-        std::cout << crs.col_ind[i] << '\t';
+        std::cout << crs.col_ind[i] + 1 << ',';
     }
     std::cout << '\n';
 
     std::cout << "row_ptr:\t";
     for (unsigned int i = 0; i < crs.row_ptr.size(); i++)
     {
-        std::cout << crs.row_ptr[i] << '\t';
+        std::cout << crs.row_ptr[i] + 1 << ',';
     }
     std::cout << '\n';
     std::cout << '\n';
@@ -50,21 +50,21 @@ void problem_1()
         << "val:\t";
     for (unsigned int i = 0; i < ccs.val.size(); i++)
     {
-        std::cout << ccs.val[i] << '\t';
+        std::cout << ccs.val[i] << ',';
     }
     std::cout << '\n';
 
     std::cout << "row_ind:\t";
     for (unsigned int i = 0; i < ccs.row_ind.size(); i++)
     {
-        std::cout << ccs.row_ind[i] << '\t';
+        std::cout << ccs.row_ind[i] + 1 << ',';
     }
     std::cout << '\n';
 
-    std::cout << "row_ptr:\t";
+    std::cout << "col_ptr:\t";
     for (unsigned int i = 0; i < ccs.col_ptr.size(); i++)
     {
-        std::cout << ccs.col_ptr[i] << '\t';
+        std::cout << ccs.col_ptr[i] + 1 << ',';
     }
     std::cout << '\n';
     std::cout << '\n';
@@ -77,28 +77,28 @@ void problem_1()
         << "jdiag:\t";
     for (unsigned int i = 0; i < jds.jdiag.size(); i++)
     {
-        std::cout << jds.jdiag[i] << '\t';
+        std::cout << jds.jdiag[i] << ',';
     }
     std::cout << '\n';
 
     std::cout << "row_ind:\t";
     for (unsigned int i = 0; i < jds.col_ind.size(); i++)
     {
-        std::cout << jds.col_ind[i] << '\t';
+        std::cout << jds.col_ind[i] << ',';
     }
     std::cout << '\n';
 
     std::cout << "jd_ptr:\t";
     for (unsigned int i = 0; i < jds.jd_ptr.size(); i++)
     {
-        std::cout << jds.jd_ptr[i] << '\t';
+        std::cout << jds.jd_ptr[i] << ',';
     }
     std::cout << '\n';
 
     std::cout << "perm:\t";
     for (unsigned int i = 0; i < jds.perm.size(); i++)
     {
-        std::cout << jds.perm[i] << '\t';
+        std::cout << jds.perm[i] << ',';
     }
     std::cout << '\n';
     std::cout << '\n';
@@ -110,28 +110,28 @@ void problem_1()
         << "jdiag:\t";
     for (unsigned int i = 0; i < tjds.jdiag.size(); i++)
     {
-        std::cout << tjds.jdiag[i] << '\t';
+        std::cout << tjds.jdiag[i] << ',';
     }
     std::cout << '\n';
 
     std::cout << "row_ind:\t";
     for (unsigned int i = 0; i < tjds.row_ind.size(); i++)
     {
-        std::cout << tjds.row_ind[i] << '\t';
+        std::cout << tjds.row_ind[i] << ',';
     }
     std::cout << '\n';
 
     std::cout << "jd_ptr:\t";
     for (unsigned int i = 0; i < tjds.jd_ptr.size(); i++)
     {
-        std::cout << tjds.jd_ptr[i] << '\t';
+        std::cout << tjds.jd_ptr[i] << ',';
     }
     std::cout << '\n';
 
     std::cout << "perm:\t";
     for (unsigned int i = 0; i < tjds.perm.size(); i++)
     {
-        std::cout << tjds.perm[i] << '\t';
+        std::cout << tjds.perm[i] << ',';
     }
     std::cout << '\n';
     std::cout << '\n';
@@ -252,6 +252,6 @@ int main()
     std::cout << "\n\nPROBLEM 3:\n\n";
     problem_3();
     std::cout << "\n\nPROBLEM 4:\n\n";
-    // problem_4_1();
+    problem_4_1();
     problem_4_2();
 }
