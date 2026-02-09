@@ -5,7 +5,7 @@
 
 struct JDSMatrix
 {
-    std::vector<float> jdiag;
+    std::vector<double> jdiag;
     std::vector<unsigned int> col_ind;
     std::vector<unsigned int> perm;
     std::vector<unsigned int> jd_ptr;
@@ -13,8 +13,8 @@ struct JDSMatrix
     unsigned int num_cols;
 };
 
-struct JDSMatrix to_jds(std::vector<std::vector<float>> mat);
-std::vector<std::vector<float>> from_jds(struct JDSMatrix jds);
-std::vector<float> jds_matrix_vector_mult(struct JDSMatrix jds, std::vector<float> x);
+struct JDSMatrix to_jds(std::vector<std::vector<double>> mat);
+std::vector<std::vector<double>> from_jds(struct JDSMatrix jds);
+std::vector<double> jds_matrix_vector_mult(struct JDSMatrix jds, std::vector<double> x);
 
 #endif

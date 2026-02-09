@@ -13,25 +13,35 @@ int main()
 
     matrix ibm32 = read_dense_matrix("matrices/ibm32.mtx");
 
-    CRSMatrix ibm32_crs = read_crs("matrices/ibm32.mtx");
+    TJDSMatrix ibm32_tjds = read_tjds("matrices/ibm32.mtx");
 
-    CRSMatrix ibm32_convert = to_crs(ibm32);
+    TJDSMatrix ibm32_convert = to_tjds(ibm32);
 
-    assert(ibm32_crs.num_cols == ibm32_convert.num_cols);
-    assert(ibm32_crs.num_rows == ibm32_convert.num_rows);
-    assert(ibm32_crs.col_ind.size() == ibm32_convert.col_ind.size());
-    assert(ibm32_crs.val.size() == ibm32_convert.val.size());
-    assert(ibm32_crs.row_ptr.size() == ibm32_convert.row_ptr.size());
+    assert(ibm32_tjds.num_cols == ibm32_convert.num_cols);
+    assert(ibm32_tjds.num_rows == ibm32_convert.num_rows);
+    assert(ibm32_tjds.row_ind.size() == ibm32_convert.row_ind.size());
+    assert(ibm32_tjds.perm.size() == ibm32_convert.perm.size());
+    assert(ibm32_tjds.jd_ptr.size() == ibm32_convert.jd_ptr.size());
+    assert(ibm32_tjds.jdiag.size() == ibm32_convert.jdiag.size());
 
-    for (unsigned int i = 0; i < ibm32_convert.col_ind.size(); i++)
+    std::cout << "row_ind:\t";
+
+    for (unsigned int i = 0; i < ibm32_tjds.row_ind.size(); i++)
     {
-        assert(ibm32_crs.col_ind[i] == ibm32_convert.col_ind[i]);
-        assert(ibm32_crs.val[i] == ibm32_convert.val[i]);
+        assert(ibm32_tjds.row_ind[i] == ibm32_convert.row_ind[i]);
     }
-
-    for (unsigned int i = 0; i < ibm32_convert.row_ptr.size(); i++)
+    std::cout << '\n';
+    for (unsigned int i = 0; i < ibm32_tjds.perm.size(); i++)
     {
-        assert(ibm32_crs.row_ptr[i] == ibm32_convert.row_ptr[i]);
+        assert(ibm32_tjds.perm[i] == ibm32_convert.perm[i]);
+    }
+    for (unsigned int i = 0; i < ibm32_tjds.jd_ptr.size(); i++)
+    {
+        assert(ibm32_tjds.jd_ptr[i] == ibm32_convert.jd_ptr[i]);
+    }
+    for (unsigned int i = 0; i < ibm32_tjds.jdiag.size(); i++)
+    {
+        assert(ibm32_tjds.jdiag[i] == ibm32_convert.jdiag[i]);
     }
 
     matrix mat = {{0., 1., 2.}, {1., 2., 3.}, {0., -12., 9.}, {3., 2., 7.}};

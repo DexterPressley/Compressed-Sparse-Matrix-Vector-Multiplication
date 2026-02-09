@@ -1,8 +1,11 @@
 #include "ReadMatrixFile.h"
+#include "TJDS.h"
 #include <cassert>
 #include <sstream>
 #include <fstream>
 #include <iostream>
+#include "CCS.h"
+#include <algorithm>
 
 matrix read_dense_matrix(std::string file_path)
 {
@@ -55,7 +58,6 @@ matrix read_dense_matrix(std::string file_path)
 
 CRSMatrix read_crs(std::string file_path)
 {
-
     std::string line;
     std::ifstream file(file_path);
 
@@ -134,7 +136,195 @@ CRSMatrix read_crs(std::string file_path)
     return output;
 }
 
-// CRSMatrix read_crs(std::string file_path)
-// {
-//     return CRSMatrix();
-// }
+CCSMatrix read_ccs(std::string file_path)
+{
+    std::string line;
+    std::ifstream file(file_path);
+
+    assert(std::getline(file, line)); // ignore first line since it is a text header
+    assert(std::getline(file, line));
+
+    std::istringstream sizes(line);
+
+    unsigned int rows, cols;
+
+    assert(sizes >> rows >> cols); // ignore num nonzero elements we don't need that
+
+    std::vector<std::vector<unsigned int>> col_index_list(cols, std::vector<unsigned int>());
+    matrix col_value_list(cols, std::vector<double>());
+
+    while (std::getline(file, line))
+    {
+        // read in each space separated string into a vector
+        std::vector<std::string> inputs{};
+        std::string current_word = "";
+        for (unsigned int chr = 0; chr < line.size(); chr++)
+        {
+            if (isspace(line[chr]))
+            {
+                inputs.push_back(current_word);
+                current_word = "";
+                continue;
+            }
+            current_word += line[chr];
+        }
+        inputs.push_back(current_word);
+
+        std::istringstream data(line);
+        unsigned int row, col;
+        assert(data >> row >> col);
+        col_index_list[col - 1].push_back(row - 1);
+        if (inputs.size() == 2)
+        {
+            col_value_list[col - 1].push_back(1.);
+        }
+
+        if (inputs.size() == 3) // row index, column index, value
+        {
+            double value;
+            assert(data >> value);
+            col_value_list[col - 1].push_back(value);
+        }
+    }
+
+    CCSMatrix output;
+    output.num_cols = cols;
+    output.num_rows = rows;
+
+    output.col_ptr = std::vector<unsigned int>();
+    output.col_ptr.push_back(0);
+
+    unsigned int sum = 0;
+    for (std::vector<unsigned int> col : col_index_list)
+    {
+        sum += col.size();
+        output.col_ptr.push_back(sum);
+        for (unsigned int row : col)
+        {
+            output.row_ind.push_back(row);
+        }
+    }
+
+    for (std::vector<double> col : col_value_list)
+    {
+        for (double value : col)
+        {
+            output.val.push_back(value);
+        }
+    }
+
+    return output;
+}
+
+TJDSMatrix read_tjds(std::string file_path)
+{
+    std::string line;
+    std::ifstream file(file_path);
+
+    assert(std::getline(file, line)); // ignore first line since it is a text header
+    assert(std::getline(file, line));
+
+    std::istringstream sizes(line);
+
+    unsigned int rows, cols;
+
+    assert(sizes >> rows >> cols); // ignore num nonzero elements we don't need that
+
+    std::vector<std::vector<unsigned int>> col_index_list(cols, std::vector<unsigned int>());
+    matrix col_value_list(cols, std::vector<double>());
+
+    while (std::getline(file, line))
+    {
+        // read in each space separated string into a vector
+        std::vector<std::string> inputs{};
+        std::string current_word = "";
+        for (unsigned int chr = 0; chr < line.size(); chr++)
+        {
+            if (isspace(line[chr]))
+            {
+                inputs.push_back(current_word);
+                current_word = "";
+                continue;
+            }
+            current_word += line[chr];
+        }
+        inputs.push_back(current_word);
+
+        std::istringstream data(line);
+        unsigned int row, col;
+        assert(data >> row >> col);
+        col_index_list[col - 1].push_back(row - 1);
+        if (inputs.size() == 2)
+        {
+            col_value_list[col - 1].push_back(1.);
+        }
+
+        if (inputs.size() == 3) // row index, column index, value
+        {
+            double value;
+            assert(data >> value);
+            col_value_list[col - 1].push_back(value);
+        }
+    }
+
+    struct TJDSMatrix out;
+    out.jdiag = std::vector<double>();
+    out.row_ind = std::vector<unsigned int>();
+    out.perm = std::vector<unsigned int>();
+    out.jd_ptr = std::vector<unsigned int>();
+    out.num_rows = rows;
+    out.num_cols = cols;
+    if (out.num_rows == 0 || out.num_cols == 0)
+        return out;
+
+    std::vector<unsigned int> nonzeros{};
+    for (auto col : col_value_list)
+    {
+        nonzeros.push_back(col.size());
+    }
+
+    std::vector<unsigned int> forward_perm = permute_descending(nonzeros);
+
+    // Store forward permutation as 1-based in out.perm
+    for (unsigned int j = 0; j < forward_perm.size(); j++)
+    {
+        out.perm.push_back(forward_perm[j] + 1); // Convert to 1-based
+    }
+
+    unsigned int max_nonzeros = 0;
+    for (unsigned int j = 0; j < nonzeros.size(); j++)
+        if (nonzeros[j] > max_nonzeros)
+            max_nonzeros = nonzeros[j];
+
+    if (max_nonzeros == 0)
+    {
+        out.jd_ptr.push_back(1);
+        return out;
+    }
+
+    // permute cols and indices
+    // std::vector<std::vector<std::pair<unsigned int, double>>> columns(out.num_cols);
+
+    // for (unsigned int i = 0; i < cols; i++)
+    // {
+    //     for (unsigned int j = 0; j < col_value_list[i].size(); j++)
+    //     {
+    //         columns[i].push_back(std::make_pair(j, col_value_list[j][forward_perm[i]]));
+    //     }
+    // }
+
+    for (unsigned int k = 0; k < max_nonzeros; k++)
+    {
+        out.jd_ptr.push_back(out.jdiag.size() + 1);
+        for (unsigned int j = 0; j < out.num_cols; j++)
+        {
+            if (col_index_list[forward_perm[j]].size() > k)
+            {
+                out.row_ind.push_back(col_index_list[forward_perm[j]][k] + 1);
+                out.jdiag.push_back(col_value_list[forward_perm[j]][k]);
+            }
+        }
+    }
+
+    return out;
+}
