@@ -25,32 +25,16 @@ matrix read_dense_matrix(std::string file_path)
 
     while (std::getline(file, line))
     {
-        // read in each space separated string into a vector
-        std::vector<std::string> inputs{};
-        std::string current_word = "";
-        for (unsigned int chr = 0; chr < line.size(); chr++)
-        {
-            if (isspace(line[chr]))
-            {
-                inputs.push_back(current_word);
-                current_word = "";
-                continue;
-            }
-            current_word += line[chr];
-        }
-        inputs.push_back(current_word);
-
         std::istringstream data(line);
         unsigned int row, col;
-        assert(data >> row >> col);
-        output[row - 1][col - 1] = 1.; // i have to do these stupid -1s because it starts counting from 1
+        if (!(data >> row >> col))
+            continue; // skip malformed/empty lines
 
-        if (inputs.size() == 3) // row index, column index, value
-        {
-            double value;
-            assert(data >> value);
+        double value;
+        if (data >> value)
             output[row - 1][col - 1] = value;
-        }
+        else
+            output[row - 1][col - 1] = 1.;
     }
 
     return output;
@@ -75,36 +59,17 @@ CRSMatrix read_crs(std::string file_path)
 
     while (std::getline(file, line))
     {
-        // read in each space separated string into a vector
-        std::vector<std::string> inputs{};
-        std::string current_word = "";
-        for (unsigned int chr = 0; chr < line.size(); chr++)
-        {
-            if (isspace(line[chr]))
-            {
-                inputs.push_back(current_word);
-                current_word = "";
-                continue;
-            }
-            current_word += line[chr];
-        }
-        inputs.push_back(current_word);
-
         std::istringstream data(line);
         unsigned int row, col;
-        assert(data >> row >> col);
-        row_index_list[row - 1].push_back(col - 1);
-        if (inputs.size() == 2)
-        {
-            row_value_list[row - 1].push_back(1.);
-        }
+        if (!(data >> row >> col))
+            continue;
 
-        if (inputs.size() == 3) // row index, column index, value
-        {
-            double value;
-            assert(data >> value);
+        row_index_list[row - 1].push_back(col - 1);
+        double value;
+        if (data >> value)
             row_value_list[row - 1].push_back(value);
-        }
+        else
+            row_value_list[row - 1].push_back(1.);
     }
 
     CRSMatrix output;
@@ -155,36 +120,17 @@ CCSMatrix read_ccs(std::string file_path)
 
     while (std::getline(file, line))
     {
-        // read in each space separated string into a vector
-        std::vector<std::string> inputs{};
-        std::string current_word = "";
-        for (unsigned int chr = 0; chr < line.size(); chr++)
-        {
-            if (isspace(line[chr]))
-            {
-                inputs.push_back(current_word);
-                current_word = "";
-                continue;
-            }
-            current_word += line[chr];
-        }
-        inputs.push_back(current_word);
-
         std::istringstream data(line);
         unsigned int row, col;
-        assert(data >> row >> col);
-        col_index_list[col - 1].push_back(row - 1);
-        if (inputs.size() == 2)
-        {
-            col_value_list[col - 1].push_back(1.);
-        }
+        if (!(data >> row >> col))
+            continue;
 
-        if (inputs.size() == 3) // row index, column index, value
-        {
-            double value;
-            assert(data >> value);
+        col_index_list[col - 1].push_back(row - 1);
+        double value;
+        if (data >> value)
             col_value_list[col - 1].push_back(value);
-        }
+        else
+            col_value_list[col - 1].push_back(1.);
     }
 
     CCSMatrix output;
@@ -235,40 +181,17 @@ TJDSMatrix read_tjds(std::string file_path)
 
     while (std::getline(file, line))
     {
-        // read in each space separated string into a vector
-        std::vector<std::string> inputs{};
-        std::string current_word = "";
-        for (unsigned int chr = 0; chr < line.size(); chr++)
-        {
-            if (isspace(line[chr]))
-            {
-                if (current_word.length() == 0)
-                {
-                    continue;
-                }
-                inputs.push_back(current_word);
-                current_word = "";
-                continue;
-            }
-            current_word += line[chr];
-        }
-        inputs.push_back(current_word);
-
         std::istringstream data(line);
         unsigned int row, col;
-        assert(data >> row >> col);
-        col_index_list[col - 1].push_back(row - 1);
-        if (inputs.size() == 2)
-        {
-            col_value_list[col - 1].push_back(1.);
-        }
+        if (!(data >> row >> col))
+            continue;
 
-        if (inputs.size() == 3) // row index, column index, value
-        {
-            double value;
-            assert(data >> value);
+        col_index_list[col - 1].push_back(row - 1);
+        double value;
+        if (data >> value)
             col_value_list[col - 1].push_back(value);
-        }
+        else
+            col_value_list[col - 1].push_back(1.);
     }
 
     struct TJDSMatrix out;
